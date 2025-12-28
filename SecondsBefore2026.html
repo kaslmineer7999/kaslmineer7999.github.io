@@ -27,6 +27,7 @@
 				line-height: 80px;
 				font-size: 60px;
 				font-family: calc;
+				font-weight: bolder;
 				position: relative;
 				overflow: hidden;
 				width: 100%;
@@ -82,9 +83,13 @@
 							return;
 						};
 						var elem = document.createElement('div');
-						elem.innerHTML = Math.floor(
+						var str = Math.floor(
 							(targetYear - Date.now()) / 1000
 						);
+						if(str <= 0) {
+							str = "<strong>IT'S OVER!!! ITS 2026!!!</strong>";
+						};
+						elem.innerHTML = String(str);
 						countParent.appendChild(elem);
 						if(x) {
 							increase();
@@ -92,6 +97,9 @@
 						if(!x) {
 							x = true;
 						};
+						if(str <= 0) {
+							x = false;
+						}
 					};
 					requestAnimationFrame(step);
 				};

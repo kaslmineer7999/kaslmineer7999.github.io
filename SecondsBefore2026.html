@@ -42,6 +42,17 @@
 				height: 100%;
 				width: 100%;
 			}
+			a.gb {
+				position: fixed;
+				bottom: -6px;
+				right: -6px;
+				border-radius: 50%;
+				padding: 10px;
+				background: white;
+				font-style: normal;
+				text-decoration: none;
+				color: black;
+			}
 		</style>
 	</head>
 	<body>
@@ -105,6 +116,13 @@
 				};
 				count();
 			}();
+		</script>
+		<script>
+			document.location.hostname == 'kaslmineer7999.github.io' &&
+			document.write(
+				'<a class="gb" href="javascript: history.go(-1)">' +
+				'&rsaquo;&rsaquo;&rsaquo;</a>'
+			);
 		</script>
 	</body>
 </html>

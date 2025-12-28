@@ -10,7 +10,7 @@ body {
 body * {
 	transition: color 250ms;
 }
-body *: hover {
+body *:hover {
 	color: #cf1313;
 }
 ul:hover {

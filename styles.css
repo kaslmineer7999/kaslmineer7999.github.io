@@ -1,11 +1,19 @@
+html {
+	background-color: #191919;
+}
+
 body {
 	font-family: serif;
-	background-color: #191919;
+	background: linear-gradient(
+		90deg,
+		#333333 0% 224px,
+		#212121 224px 100%
+	);
 	color: #f0f0f0;
 	text-align: center;
 	max-width: 960px;
 	margin: 20px auto;
-	padding: 0px 12px;
+	padding: 12px;
 }
 body * {
 	transition: color 250ms;
@@ -31,9 +39,7 @@ li:hover {
 .side {
 	float: left;
 	margin: 0;
-	top: 2%;
-	left: 0;
-	width: 200px;
+	width: 206px;
 	height: max-content;
 	list-style: none;
 	padding-left: 0;
@@ -79,7 +85,7 @@ li:hover {
 }
 .main {
 	float: right;
-	width: calc(100% - 210px);
+	width: calc(100% - 224px);
 }
 
 .main > :nth-child(1) {

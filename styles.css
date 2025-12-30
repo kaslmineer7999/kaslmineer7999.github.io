@@ -43,7 +43,8 @@ li:hover {
 	height: max-content;
 	list-style: none;
 	padding-left: 0;
-	position: relative;
+	position: sticky;
+	top: 12px;
 }
 .side:before {
 	content: '';
@@ -114,6 +115,8 @@ img {
 		background: #333333;
 		flex-wrap: wrap;
 		justify-content: center;
+		position: relative;
+		top: 0px;
 	}
 	.side li {
 		flex-grow: 0;

@@ -1,0 +1,219 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=UTF-8"/>
+		<style>
+			html {
+				background: #222;
+				color: #f0f0f0;
+				font: 1em/1.5 Verdana, Helvetica, Arial, sans-serif;
+			}
+			body {
+				margin: 0px;
+				padding: 0px;
+			}
+			*, *:after, *:before {
+				box-sizing: border-box;
+			}
+			#wrap {
+				max-width: 512px;
+				padding: 2em;
+				background: #151515;
+				margin: 2em auto;
+			}
+			#wrap :first-child {
+				margin-top: 0px;
+			}
+			#wrap :last-child {
+				margin-bottom: 0px;
+			}
+			.plotui {
+				position: relative;
+				width: 420px;
+				height: 210px;
+				margin: 0px auto;
+			}
+			.plotui .plotnx {
+				top: 0px;
+				left: 0px;
+				width: 10%;
+				height: 100%;
+				position: absolute;
+				background: #555;
+				text-align: center;
+			}
+			.plotui .plotnx div {
+				height: 16.6%;
+			}
+			.plotui #plot {
+				position: absolute;
+				top: 0px;
+				left: 10%;
+				right: 0px;
+				bottom: 10%;
+				background: #333;
+			}
+			.plotui .plotny {
+				background: #888;
+				position: absolute;
+				bottom: 0px;
+				left: 10%;
+				right: 0px;
+				height: 10%;
+			}
+			.plotui .plotny div {
+				width: 16.6%;
+				float: left;
+			}
+			.form-group {
+				position: relative;
+				border: 1px solid;
+				color: #0f0;
+				margin: 2em auto;
+				height: 300px;
+			}
+			.form-group .textarea-group textarea {
+				all: unset;
+				overflow-x: hidden;
+				width: 100%;
+				height: 100%;
+				font-family: monospace;
+			}
+			.form-group .textarea-group {
+				position: absolute;
+				top: 10%;
+				left: 0px;
+				right: 25%;
+				bottom: 0px;
+				padding: 1em;
+				border-right: 1px solid;
+			}
+			.form-group .title-group {
+				position: absolute;
+				line-height: 100%;
+				padding: 0px 1em;
+				top: 2.5%;
+				left: 0px;
+				right: 0px;
+				bottom: 90%;
+				border-bottom: 1px solid;
+			}
+			.form-group .button-group {
+				position: absolute;
+				top: 10%;
+				left: 75%;
+				right: 0px;
+				bottom: 0px;
+			}
+			.form-group .button-group button {
+				all: unset;
+				display: block;
+				text-align: center;
+				width: 100%;
+				height: 50%;
+				cursor: pointer;
+				color: #0f0;
+				text-shadow: 0px 0px 0.5em #0f0a;
+			}
+			.form-group .button-group button:nth-child(even) {
+				border-top: 1px solid;
+			}
+			var {
+				font-family: monospace;
+				font-size: 1.5em;
+				vertical-align: middle;
+				line-height: 1.0;
+				background: #050505;
+				padding: 0px 0.1em;
+				border: 1px solid #333;
+				border-radius: 0.1em;
+			}
+			.plotui #plot .point {
+				position: absolute;
+				width: 0.1%;
+				height: 1%;
+				background: #f00;
+				border-radius: 50%;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="wrap">
+			<h1>Plotter</h1>
+			<div class="plotui">
+				<div class="plotnx">
+					<div>1.0</div>
+					<div>0.8</div>
+					<div>0.6</div>
+					<div>0.4</div>
+					<div>0.2</div>
+					<div>0.0</div>
+				</div>
+				<div id="plot"></div>
+				<div class="plotny">
+					<div>0.0</div>
+					<div>0.2</div>
+					<div>0.4</div>
+					<div>0.6</div>
+					<div>0.8</div>
+					<div>1.0</div>
+				</div>
+			</div>
+			<form class="form-group" id="form">
+				<div class="title-group">
+					Function Plot Paramaters
+				</div>
+				<div class="textarea-group">
+					<textarea rows="1" cols="1" required="required"
+						placeholder="return x*x;" autocomplete="off"
+						autocorrect="off" spellcheck="false"
+						wrap="on" name="functionText"></textarea>
+				</div>
+				<div class="button-group">
+					<button type="submit">Plot!</button>
+					<button id="example">Example!</button>
+				</div>
+			</form>
+			<p><em>Note that <strong><var>x</var></strong> represents
+				<strong>Input Value</strong></em></p>
+		</div>
+		<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+			integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+			crossorigin="anonymous"></script>
+		<script>
+			$(document).ready(function() {
+				$('#form').submit(function() {
+					$('#plot').html('');
+					try {
+						var userFunction = new Function('x',
+							('with(Math) {' + 
+								'with(Number) {' +
+								$(this.functionText).val() + '}}'
+							).replace(/\r\n/g, '\n'));
+					} catch (x) {};
+					for(var i = 0; i < 1000; i++) {
+						try {
+							var v = userFunction(i / 1000) * 100;
+						} catch (x) {
+							var v = 0;
+						};
+						$('<div></div>')
+							.addClass('point')
+							.css('left', (i / 10) + '%')
+							.css('bottom', v + '%')
+							.appendTo('#plot');
+					};
+					return false;
+				});
+				$('#example').click(function() {
+					var $textarea = $('#form [name="functionText"]');
+					var oldFunction = $textarea.val();
+					$textarea.val($textarea.attr('placeholder'));
+					$('#form').submit();
+					$textarea.val(oldFunction);
+					return false;
+				});
+			});
+		</script>
+	</body>
+</html>

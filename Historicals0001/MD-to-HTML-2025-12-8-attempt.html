@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+	<body>
+		<h1>Concoction of a invention of a
+			<abbr title="MarkDown">MD</abbr> to
+			<abbr title="HyperText Markup Language">HTML</abbr>
+			converter
+		</h1>
+		<hr/>
+		<form action="" id="form">
+			<label for="md">Markdown:</label>
+			<div class="ta-wrapper"><textarea wrap="off" rows="1" cols="1" name="md"
+			id="md"></textarea></div>
+			<label for="html">HTML:</label>
+			<div class="ta-wrapper"><textarea wrap="off" rows="1" cols="1" name="html"
+			id="html" role="status"
+			readonly="readonly"></textarea></div>
+			<label>HTML Preview:</label>
+			<iframe src="javascript:void(0)" id="preview"></iframe>
+			<br/>
+			<input type="submit" value="Submit &raquo;&raquo;"/>
+		</form>
+		<style type="text/css">
+			html, body {
+				margin : 0px;
+				padding: 0px;
+				border : 0px;
+				outline: 0px;
+			}
+			*, *:after, *:before {
+				box-sizing: border-box;
+			}
+			html {
+				background    : #101010;
+				color         : #f0f0f0;
+				font          : 13px / 1.5 Verdana, Helvetica, Arial, sans-serif;
+				text-align    : center;
+				display       : flex;
+				flex-direction: column;
+				position      : absolute;
+				width         : 100%;
+				min-height    : 100%;
+				padding       : 33px 22px;
+			}
+			body {
+			  /*max-width : 725px;*/
+			  /*max-width : 960px;*/
+				max-width    : 1200px;
+				width        : 100%;
+				background   : #252525;
+				padding      : 22px;
+				margin       : auto;
+				box-shadow   : 0px 0px 48px 6px black;
+				border-radius: 22px;
+			}
+			h1 {
+				font-size: 22px;
+			}
+			form {
+				margin: 35px 18px;
+			}
+			label {
+				display  : block;
+				font-size: 16px;
+				margin   : 0px 0px 24px;
+				cursor   : text;
+			}
+			textarea {
+				width        : 100%;
+			  /*max-width    : 75ch;*/
+				height       : 99999px;
+				max-height   : 30ch;
+				resize       : none;
+				background   : #171417;
+				color        : #0f0;
+			  /*border-radius: 8px 24px;*/
+			  /*box-shadow   : 0px 0px 12px 12px #171317;*/
+				font         : inherit;
+				font-family  : 'Lucida console', monospace;
+				overflow     : auto;
+			}
+			textarea:focus {
+				outline: 0px;
+				border : 1px solid lightgray;
+			}
+			.ta-wrapper {
+				border-radius: 8px 24px;
+				box-shadow   : 0px 0px 12px 12px #171317;
+				max-width    : 73ch;
+				margin       : 0px auto 24px;
+				overflow     : hidden;
+			}
+			input[type=submit] {
+				all          : unset;
+				box-sizing   : border-box;
+				display      : inline-block;
+				border       : 1px solid gray;
+				padding      : 12px;
+				font-size    : 16px;
+				border-radius: 12px;
+				cursor       : pointer;
+				color        : #0f0;
+				box-shadow   : 0px 0px 12px 4px #171317;
+				transition   : 300ms ease-out;
+				margin-top   : 16px;
+				text-shadow  : 0px 0px 12px;
+			}
+			input[type=submit]:hover,
+			input[type=submit]:focus {
+				box-shadow   : 0px 0px 12px 7px #171317;
+				text-shadow  : 0px 0px 12px,
+							   0px 0px 6px,
+							   0px 0px 3px;
+			}
+			input[type=submit]:focus {
+				border: 1px solid;
+			}
+			input[type=submit]:active {
+				color     : #f00;
+				border    : 3px solid;
+				margin    : -1.5px;
+				margin-top: 15.5px;
+				padding   : 10.5px;
+			}
+			@-moz-document url-prefix() {
+				input[type=submit]:active {
+					font-weight: 700;
+				}
+			}
+			hr {
+				border-color : #555;
+				border-width : 2.5px;
+				height       : 2.5px;
+				border-style : inset;
+				margin: 22px -22px 0px;
+			}
+			h1 {
+				margin-bottom: 24px;
+			}
+			iframe#preview {
+				width        : 100%;
+				max-width    : 73ch;
+				height       : 40ch;
+				border       : 1px solid gray;
+				border-radius: 12px;
+				background   : #151315;
+				box-shadow   : 0px 0px 12px 12px #151515
+			}
+		</style>
+		<script type="text/javascript">
+			!function(){
+				var form  = document.getElementById('form');
+				var previ = document.getElementById('preview');
+				var text  = '';
+				var code  = '';
+				var codec = false;
+				var lines = [];
+				var lidx  = void(0);
+				var dfrag = void(0);
+				var ele   = void(0);
+
+				form.onsubmit = function(e){
+					e.preventDefault();
+					e.stopPropagation();
+					text = form.md.value;
+					texto = '';
+					dfrag = document.createElement('div');
+
+					lines = text.split('\n');
+					for(var lidx in lines){
+						if(lines[lidx].substring(0, 7) == '###### '){
+							ele = document.createElement('h6');
+							ele.innerHTML = lines[lidx].substring(7);
+							dfrag.appendChild(ele);
+							continue;
+						};
+						if(lines[lidx].substring(0, 6) == '##### '){
+							ele = document.createElement('h5');
+							ele.innerHTML = lines[lidx].substring(6);
+							dfrag.appendChild(ele);
+							continue;
+						};
+						if(lines[lidx].substring(0, 5) == '#### '){
+							ele = document.createElement('h4');
+							ele.innerHTML = lines[lidx].substring(5);
+							dfrag.appendChild(ele);
+							continue;
+						};
+						if(lines[lidx].substring(0, 4) == '### '){
+							ele = document.createElement('h3');
+							ele.innerHTML = lines[lidx].substring(4);
+							dfrag.appendChild(ele);
+							continue;
+						};
+						if(lines[lidx].substring(0, 3) == '## '){
+							ele = document.createElement('h2');
+							ele.innerHTML = lines[lidx].substring(3);
+							dfrag.appendChild(ele);
+							continue;
+						};
+						if(lines[lidx].substring(0, 2) == '# '){
+							ele = document.createElement('h1');
+							ele.innerHTML = lines[lidx].substring(2);
+							dfrag.appendChild(ele);
+							continue;
+						};
+						if(lines[lidx] == '```'){
+							if(!codec){
+								codec = true;
+								code  = '';
+							} else {
+								codec = false;
+								ele = document.createElement('pre');
+								ele.innerText = code;
+								dfrag.appendChild(ele);
+							};
+							continue;
+						};
+						if(codec){
+							code += lines[lidx] + '\n';
+							continue;
+						};
+						ele = document.createElement('p');
+						ele.innerHTML = lines[lidx];
+						if(lines[lidx].match(/^\s*$/g)){
+							ele = document.createElement('br');
+						};
+						if(!codec){
+							dfrag.appendChild(ele);
+						};
+					};
+
+					texto = dfrag.innerHTML;
+					previ.contentWindow.document.open();
+					previ.contentWindow.document.write('<style>' +
+					'html {' +
+					'	background: #151315;' +
+					'	color     : #f0f0f0;' +
+					'	font      : 13px / 1.5 Verdana, Helvetica, Arial,' +
+					'				sans-serif' +
+					'}'
+					+ '</style>' + texto);
+					previ.contentWindow.document.close();
+					form.html.value = texto;
+
+				};
+			}();
+		</script>
+	</body>
+</html>

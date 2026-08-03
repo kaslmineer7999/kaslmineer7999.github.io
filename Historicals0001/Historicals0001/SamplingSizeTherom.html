@@ -1,0 +1,189 @@
+<style>
+  html {
+    background: #131313;
+    color: #0f0;
+    font: 12px/1.5 Verdana, Arial, sans-serif;
+    word-wrap: break-word;
+  }
+  *, *:after, *:before {
+    box-sizing: border-box;
+  }
+  body {
+    width: 95%;
+    max-width: calc(480px + 1em);
+    margin: auto;
+    position: absolute;
+    top: 2.5%;
+    left: 0px;
+    right: 0px;
+    min-height: 95%;
+    background: #151515;
+    padding: 1em;
+    border-radius: 1em;
+    box-shadow: 0px 0px 1em 0px #000;
+  }
+  p#about {
+    padding: 4px 32px;
+    font-style: italic;
+    font-family: serif;
+    font-size: 16px;
+  }
+  p#about a {
+    color: #4690eb;
+    /* this forces hyperlinks to not change color on state, unless if i explicity specify a state in my css*/
+  }
+  p#about a:active {
+    color: #ff4590;
+  }
+  input {
+    all: unset;
+    appearance: unset;
+    border: 1px solid;
+    padding: 0px;
+    width: calc(100% - 2ch);
+  }
+  .group:after {
+    content: ' ';
+    display: block;
+    clear: both;
+  }
+  .group:nth-child(odd) {
+    padding-bottom: 8px;
+  }
+  .group .input-group {
+    float: right;
+    width: calc(100% - 10ch);
+  }
+  .group .name-group {
+    float: left;
+  }
+  form#simparam {
+    margin-left: 1em;
+    margin-right: 1em;
+    border: 1px solid;
+    margin-bottom: 2em;
+    background: #111;
+    box-shadow: 0px 0px 1em 0.1em #000;
+  }
+  form#simparam:after {
+    content: ' ';
+    display: block;
+    clear: both;
+  }
+  .form-group {
+    float: left;
+    width: 75%;
+    padding: 1em;
+  }
+  button {
+    all: unset;
+    float: right;
+    width: 20%;
+    margin-right: 2.5%;
+    height: calc(2em + 2em + 4px + 20px);
+    background: #111811;
+    border: 1px solid;
+    border-top: 0px;
+    border-bottom: 0px;
+    text-align: center;
+    cursor: pointer;
+  }
+  hr {
+    all: unset;
+    display: block;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: currentColor;
+    margin: 16px 32px;
+  }
+  #bar {
+    width: 64px;
+    height: 256px;
+    background: linear-gradient(#000, #444);
+    position: relative;
+    overflow: hidden;
+    border-radius: 2px;
+    box-shadow: 0px 0px 1em 0.1em black;
+    margin-bottom: 2em;
+  }
+  #bar #juice {
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    width: 100%;
+    height: 0%;
+    background: #0f0;
+    box-shadow: 0px 0px 1em 0.2em #0c0;
+  }
+  .percent-group {
+    width: 50%;
+    float: left;
+  }
+  .fraction-group {
+    width: 50%;
+    float: right;
+    text-align: right;
+  }
+  .data-group:after {
+    content: ' ';
+    display: block;
+    clear: both;
+  }
+  .data-group {
+    padding: 0px 1em;
+  }
+</style>
+<h1>Sampling Size Therom</h1>
+<p id="about">This Program proves The law of Large Numbers<sup><a href="https://en.wikipedia.org/wiki/Law_of_large_numbers" target="_blank">[source]</a></sup></p>
+<hr/>
+<p>This is the Simulation Paramaters form:</p>
+<form id="simparam">
+  <div class="form-group">
+    <div class="group">
+      <div class="name-group">Probabilty:</div>
+      <div class="input-group">
+        <input type="number" min="0" max="100" value="50"
+          id="prob"/>%
+      </div>
+    </div>
+    <div class="group">
+      <div class="name-group"># of Trials:</div>
+      <div class="input-group">
+        <input type="number" min="0" value="1000" id="trials"/>
+      </div>
+    </div>
+  </div>
+  <button type="submit">Submit</button>
+</form>
+<div id="bar">
+  <div id="juice"></div>
+</div>
+<div class="data-group">
+  <div class="percent-group">
+    Percent: <span id="percent"><i style="font: italic 14px/1.0 serif;">
+      Nothing to see here.
+    </i></span>
+  </div>
+  <div class="fraction-group">
+    Fraction: <span id="fraction"><i style="font: italic 14px/1.0 serif;">
+      Nothing to see here.
+    </i></span>
+  </div>
+</div>
+<script>
+  void function() {
+    var form = document.getElementById('simparam');
+    var juice = document.getElementById('juice');
+    var percent = document.getElementById('percent');
+    form.onsubmit = function(e) {
+      e.preventDefault();
+      var accum = 0;
+      for(var i = 0; i < form.trials.value; i++) {
+        if(Math.random() * 100 < form.prob.value) accum++;
+      };
+      juice.style.height = 
+        percent.innerHTML = (100 * accum / form.trials.value) + '%';
+      fraction.innerHTML = accum + ' / ' + form.trials.value;
+    };
+  }();
+</script>

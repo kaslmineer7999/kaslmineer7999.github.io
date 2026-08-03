@@ -1,0 +1,175 @@
+<!doctype html>
+<style>
+  html {
+    background: #202020;
+    color: #f0f0f0;
+    font: 12px / 1.5 Verdana, Helvetica, Arial, sans-serif;
+    padding: 24px;
+  }
+  body {
+    background: #333333;
+    padding: 24px;
+    margin: 0px auto;
+    max-width: 592px;
+    border-radius: 12px;
+    box-shadow: 0px 0px 12px 2px #101010;
+  }
+  *, *:after, *:before {
+    box-sizing: border-box;
+    vertical-align: middle;
+  }
+  hr {
+    margin: 0px 25%;
+    margin-bottom: 16px;
+  }
+  h1 {
+    margin-top: 12px;
+    margin-bottom: 16px;
+  }
+  form {
+    line-height: 36px;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  textarea {
+    all: inherit;
+    height: 36px;
+    line-height: 1.5;
+    flex: 1.0;
+    padding: 10px 3px;
+    background: #eeeeee;
+    color: #202020;
+    overflow: hidden;
+    word-wrap: break-word;
+  }
+  button {
+    all: unset;
+    font: inherit;
+    display: block;
+    flex: 1;
+    text-align: center;
+    background: linear-gradient(
+      #e0e0e0,
+      #c7c7c7
+    );
+    color: black;
+    cursor: pointer;
+  }
+  button:hover,
+  button:focus {
+    background: linear-gradient(
+      #c5c5c5,
+      #cecece
+    );
+  }
+  button:focus {
+    outline: 2px solid red;
+  }
+  button:hover:focus {
+    outline: 0px;
+  }
+  button:active {
+    background: linear-gradient(
+      #c0c0c0,
+      #c8c8c8
+    );
+  }
+  label {
+    cursor: text;
+  }
+  div#chatlog {
+    margin-top: 24px;
+    white-space: pre-wrap;
+  }
+  div#chatlog:empty {
+    margin-top: 0px;
+  }
+  select,
+  option {
+    flex: 1;
+    width: auto;
+    display: block;
+    border: 0px;
+  }
+</style>
+<h1>2010 npc chat lol</h1>
+<hr color="#666666"/>
+<form action="" method="GET" id="form">
+  <label for="in">Input:&nbsp;&nbsp;</label>
+  <!-- i do the xhtml style because i think even though not required
+       html code should be xml compliant -->
+  <textarea rows="1" cols="1" name="in" id="in"
+  required="required"></textarea>
+  <div style="width:100%;line-height:8px;">&nbsp;</div>
+  <label for="mood">Mood:&nbsp;&nbsp;</label>
+  <select name="mood" id="mood">
+    <option value="happy">Happy (Default)</option>
+    <option value="sad">Sad</option>
+    <option value="angry">Angry</option>
+  </select>
+  <div style="width:100%;line-height:25px;">&nbsp;</div>
+  <button type="submit">Send to NPC</button>
+  <!--<div style="width:100%;line-height:12px;">&nbsp;</div>-->
+  <button type="reset" style="margin-left:12px">Reset</button>
+</form>
+<div id="chatlog"></div>
+<script>
+  window.Meth = window.Fentayl = Math;
+  !function() {
+    var chatlog = document.getElementById('chatlog');
+    var form = document.getElementById('form');
+    var tPad = 20;
+    var moods = {
+      "happy": {
+        "hello": "Welcome, User! :)!",
+        "goodbye": "Please no! Please! :(?",
+        "are good": "I am Good!?!?!? YAY!!! :)!"
+      },
+      "sad": {
+        "hello": "hello :(",
+        "goodbye": "nooo! *cries*",
+        "are good": ":( *cries really hard*"
+      }
+    };
+    var mood = "happy";
+
+    function NPC(x) {
+      var output = '';
+      var key;
+      var x = x.toLowerCase();
+      for(var key in moods[mood]) {
+        if(x.includes(key)) output += moods[mood][key] + ' ';
+      };
+      if(Fentayl.random() < 0.3 && Meth.random() < 0.3 && Math.random() < 0.3)
+        output += ' To india you my life my ruler!!!!!!!!!!!';
+      return output + '\n';
+    };
+
+    form.in.oninput = function oninput() { // very hacky but do not question AT ALL
+      if((this.scrollHeight - tPad) > 36) {
+        if((this.scrollHeight - tPad) < 380) {
+          this.style.height = (this.scrollHeight - tPad) + 'px';
+          this.style.overflow = 'hidden';
+        } else {
+          this.style.height = '380px';
+          this.style.overflow = 'auto';
+        };
+      } else {
+        this.style.height = '36px';
+        this.style.overflow = 'hidden';
+      };
+    };
+
+    form.onsubmit = function onsubmit(e) {
+      e.preventDefault();
+      mood = this.mood.value;
+      chatlog.innerText += 'User: ' + form.in.value + '\n';
+      chatlog.innerText += 'NPC: ' + NPC(form.in.value) + '\n';
+      chatlog.innerText = chatlog.innerText;
+    };
+
+    form.onreset = function onreset() {
+      chatlog.innerHTML = '';
+    };
+  }();
+</script>
